@@ -22,6 +22,6 @@ def format_data(res):
     data['first_name'] = res['name']['first']
     data['last_name'] = res['name']['last']
     data['gender'] = res['gender']
-    data['address'] = res['street']['number'] + 
+    data['address'] = res['street']['number']
 
 stream_data()
