@@ -96,4 +96,7 @@ services:
       CONFLIENT_METRICS_ENABLE: 'false'
       PORT: 9021
     networks:
-      confluent:
+      - confluent
+
+networks:
+  confluent: 
