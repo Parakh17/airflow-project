@@ -3,7 +3,6 @@ from airflow import DAG
 import uuid
 import json
 import requests
-#from kafka import KafkaProducer
 from kafka import KafkaProducer
 from airflow.operators.python import PythonOperator
 
@@ -27,7 +26,7 @@ def format_data(res):
     
     data = {}
     location = res['location']
-    data['id'] = uuid.uuid4()
+    data['id'] = str(uuid.uuid4())
     data['first_name'] = res['name']['first']
     data['last_name'] = res['name']['last']
     data['gender'] = res['gender']
@@ -46,8 +45,10 @@ def format_data(res):
 def stream_data():
     res = get_data()
     res = format_data(res)
-    print(json.dumps(res))
     
+    producer = KafkaProducer(bootstrap_servers=["localhost:9092"], max_block_ms = 5000)
+
+    producer.send("users_created", json.dumps(res).encode('utf-8'))
 
     # res = requests.get("https://randomuser.me/api/")
     # res= res.json()
